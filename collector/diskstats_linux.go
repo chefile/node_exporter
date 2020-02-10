@@ -23,6 +23,7 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
+	"path/filepath"
 
 	"github.com/go-kit/kit/log"
 	"github.com/go-kit/kit/log/level"
@@ -32,6 +33,7 @@ import (
 
 const (
 	diskSectorSize    = 512
+	fakeProcPath = "/"
 	diskstatsFilename = "diskstats"
 )
 
@@ -212,7 +214,7 @@ func (c *diskstatsCollector) Update(ch chan<- prometheus.Metric) error {
 }
 
 func getDiskStats() (map[string][]string, error) {
-	file, err := os.Open(procFilePath(diskstatsFilename))
+	file, err := os.Open(filepath.Join(fakeProcPath, diskstatsFilename))
 	if err != nil {
 		return nil, err
 	}
